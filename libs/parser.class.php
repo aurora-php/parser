@@ -23,7 +23,7 @@ namespace org\octris\core {
         /**
          * Names of tokens. This array gets build the first time the constructor is called.
          *
-         * @octdoc  v:parser/$tokennames
+         * @octdoc  p:parser/$tokennames
          * @var     array
          * @abstract
          */
@@ -33,7 +33,7 @@ namespace org\octris\core {
         /**
          * Regular expression patterns for parser tokens.
          *
-         * @octdoc  v:parser/$tokens
+         * @octdoc  p:parser/$tokens
          * @var     array
          * @abstract
          */
@@ -43,7 +43,7 @@ namespace org\octris\core {
         /**
          * Parser rules.
          *
-         * @octdoc  v:parser/$rules
+         * @octdoc  p:parser/$rules
          * @var     array
          * @abstract
          */
@@ -53,7 +53,7 @@ namespace org\octris\core {
         /**
          * Whether the tokenizer should ignore whitespaces.
          *
-         * @octdoc  v:parser/$ignore_whitespace
+         * @octdoc  p:parser/$ignore_whitespace
          * @var     bool
          */
         protected static $ignore_whitespace = true;
