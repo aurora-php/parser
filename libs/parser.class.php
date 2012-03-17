@@ -21,6 +21,16 @@ namespace org\octris\core {
     /**/
     {
         /**
+         * Default tokens, always required.
+         * 
+         * @octdoc  d:parser/T_...
+         */
+        const T_START      = 10000;
+        const T_END        = 10001;
+        const T_WHITESPACE = 10002;
+        /**/
+
+        /**
          * Names of tokens. This array gets build the first time the constructor is called.
          *
          * @octdoc  p:parser/$tokennames
