@@ -80,21 +80,21 @@ namespace org\octris\core {
          * Set parser error.
          *
          * @octdoc  m:parser/setError
-         * @param   string      $type       Type of error to trigger.
-         * @param   int         $cline      Line in compiler class error was triggered from.
+         * @param   string      $ifile      Internal filename the error occured in.
+         * @param   int         $iline      Internal line number the error occured in.
          * @param   int         $line       Line in template the error was triggered for.
-         * @param   int         $token      ID of token that triggered the error.
-         * @param   mixed       $payload    Optional additional information. Either an array of expected.
-         *                                  token IDs or an additional message to output.
+         * @param   mixed       $token      Token that triggered the error.
+         * @param   mixed       $payload    Optional additional information.
          */
-        protected function error($type, $cline, $line, $token, $payload = NULL)
+        protected function setError($type, $cline, $line, $token, $payload = NULL)
         /**/
         {
             $this->last_error = array(
-                'type'  => $type,
-                'cline' => $cline,
-                'line'  => $line,
-                'token' => $token
+                'type'    => $type,
+                'cline'   => $cline,
+                'line'    => $line,
+                'token'   => $token,
+                'payload' => $payload
             )
         }
 
@@ -153,7 +153,7 @@ namespace org\octris\core {
                     }
                 }
                 
-                $this->setError(__FUNCTION__, __LINE__, $line, 0, sprintf('parse error at "%s" in "%s"', $in, $mem));
+                $this->setError(__FILE__, __LINE__, $line, 0, sprintf('parse error at "%s" in "%s"', $in, $mem));
                 
                 return false;
             }
