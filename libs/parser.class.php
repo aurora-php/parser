@@ -99,6 +99,18 @@ namespace org\octris\core {
         }
 
         /**
+         * Return instance of grammar as it was specified for constructor.
+         *
+         * @octdoc  m:parser/getGrammar
+         * @return  \org\octris\core\parser\grammar             Instance of grammar.
+         */
+        public function getGrammar()
+        /**/
+        {
+            return $this->grammar;
+        }
+
+        /**
          * Return last occured error.
          *
          * @octdoc  m:parser/getLastError
