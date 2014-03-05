@@ -139,6 +139,38 @@ namespace org\octris\core\parser {
         public function getEBNF()
         /**/
         {
+            $glue = array(
+                '$concatenation' => array('', ' , ', ''),
+                '$alternation'   => array('( ', ' | ', ' )'),
+                '$repeat'        => array('{ ', '', ' }'),
+                '$option'        => array('[ ', '', ' ]')
+            );
+    
+            $render = function($rule) use ($glue, &$render) {
+                if (is_array($rule)) {
+                    $type = key($rule);
+
+                    foreach ($rule[$type] as &$_rule) {
+                        $_rule = $render($_rule);
+                    }
+
+                    $return = $glue[$type][0] . 
+                              implode($glue[$type][1], $rule[$type]) .
+                              $glue[$type][2];
+                } else {
+                    $return = $rule;
+                }
+        
+                return $return;
+            };
+    
+            $return = '';
+    
+            foreach ($this->rules as $name => $rule) {
+                $return .= $name . ' = ' . $render($rule) . " ;\n";
+            }
+    
+            return $return;
         }
 
         /**
