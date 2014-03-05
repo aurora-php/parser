@@ -118,6 +118,19 @@ namespace org\octris\core\parser {
         }
         
         /**
+         * Add a token to the registry.
+         *
+         * @octdoc  m:grammar/addToken
+         * @param   string          $name                   Name of token.
+         * @param   string          $regexp                 Regular expression for parser to match token.
+         */
+        public function addToken($name, $regexp)
+        /**/
+        {
+            $this->tokens[$name] = $regexp;
+        }
+        
+        /**
          * Return the EBNF for the defined grammar.
          *
          * @octdoc  m:grammar/getEBNF
