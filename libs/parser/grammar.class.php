@@ -160,7 +160,7 @@ namespace org\octris\core\parser {
                             break;
                         case '$repeat':
                             do {
-                                $state = key($tokens);
+                                $state = $pos;
                 
                                 foreach ($rule[$type] as $_rule) {
                                     if (($valid = $v($_rule))) {
