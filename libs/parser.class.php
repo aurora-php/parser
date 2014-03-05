@@ -101,7 +101,7 @@ namespace org\octris\core {
         /**
          * Return last occured error.
          *
-         * @octdoc  m:parset/getLastError
+         * @octdoc  m:parser/getLastError
          */
         public function getLastError()
         /**/
