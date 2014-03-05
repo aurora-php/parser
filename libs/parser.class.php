@@ -27,8 +27,8 @@ namespace org\octris\core {
          * @type    array
          */
         protected $last_error = array(
-            'type'    => '',
-            'cline'   => 0,
+            'ifile'   => '',
+            'iline'   => 0,
             'line'    => 0,
             'token'   => $token,
             'payload' => null
@@ -86,12 +86,12 @@ namespace org\octris\core {
          * @param   mixed       $token      Token that triggered the error.
          * @param   mixed       $payload    Optional additional information.
          */
-        protected function setError($type, $cline, $line, $token, $payload = NULL)
+        protected function setError($ifile, $iline, $line, $token, $payload = NULL)
         /**/
         {
             $this->last_error = array(
-                'type'    => $type,
-                'cline'   => $cline,
+                'ifile'   => $ifile,
+                'iline'   => $iline,
                 'line'    => $line,
                 'token'   => $token,
                 'payload' => $payload
