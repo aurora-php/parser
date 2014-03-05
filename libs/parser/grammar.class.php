@@ -48,6 +48,15 @@ namespace org\octris\core\parser {
         /**/
         
         /**
+         * Registered tokens.
+         *
+         * @octdoc  p:grammar/$tokens
+         * @type    array
+         */
+        protected $tokens = array();
+        /**/
+        
+        /**
          * Constructor.
          *
          * @octdoc  m:grammar/__construct
@@ -94,6 +103,18 @@ namespace org\octris\core\parser {
             }
             
             $this->events[$id][] = $cb();
+        }
+        
+        /**
+         * Return list of defined tokens.
+         *
+         * @octdoc  m:grammar/getTokens
+         * 
+         */
+        public function getTokens()
+        /**/
+        {
+            return $this->tokens;
         }
         
         /**
