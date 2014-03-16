@@ -193,7 +193,6 @@ namespace org\octris\core\parser {
     
                 if (is_scalar($rule) && isset($this->rules[$rule])) {
                     // import rule
-                    dprint('is_scalar %s', $rule);
                     $rule = $this->rules[$rule];
                 }
     
@@ -273,16 +272,12 @@ namespace org\octris\core\parser {
                     } else {
                         $expected[] = $rule;
                     }
-        
-                    dprint("-> rule: %s == token: %s => %d\n", $rule, $token['token'], $valid);
                 }
     
                 return $valid;
             };
 
             if (!is_null($this->initial)) {
-                ddump($tokens, $this->rules[$this->initial]);
-                
                 $valid = $v($this->rules[$this->initial]);
             } else {
                 die("TODO: no initial rule\n");
