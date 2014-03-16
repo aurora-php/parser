@@ -264,10 +264,11 @@ namespace org\octris\core\parser {
                             }
                             break;
                     }
-                } else {
-                    $token = $tokens[$pos++];
+                } elseif (($valid = isset($tokens[$pos]))) {
+                    $token = $tokens[$pos];
         
                     if (($valid = ($token['token'] == $rule))) {
+                        ++$pos;
                         $expected = [];
                     } else {
                         $expected[] = $rule;
