@@ -73,6 +73,7 @@ namespace org\octris\core {
         /**/
         {
             $this->grammar = $grammar;
+            $this->ignore  = $ignore;
             $this->tokens  = $grammar->getTokens();
         }
 
