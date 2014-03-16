@@ -193,6 +193,7 @@ namespace org\octris\core\parser {
     
                 if (is_scalar($rule) && isset($this->rules[$rule])) {
                     // import rule
+                    dprint('is_scalar %s', $rule);
                     $rule = $this->rules[$rule];
                 }
     
@@ -256,7 +257,7 @@ namespace org\octris\core\parser {
                         $expected[] = $rule;
                     }
         
-                    dprint("-> %s == %s => %d\n", $rule, $token['token'], $valid);
+                    dprint("-> rule: %s == token: %s => %d\n", $rule, $token['token'], $valid);
                 }
     
                 return $valid;
