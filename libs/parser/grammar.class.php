@@ -202,18 +202,34 @@ namespace org\octris\core\parser {
         
                     switch ($type) {
                         case '$concatenation':
+                            $state = $pos;
+                
                             foreach ($rule[$type] as $_rule) {
                                 if (!($valid = $v($_rule))) {
                                     break;
                                 }
                             }
+
+                            if (!$valid) {
+                                // rule did not match, restore position in token stream
+                                $pos   = $state;
+                                $valid = false;
+                            }
                             break;
                         case '$alternation':
+                            $state = $pos;
+                
                             foreach ($rule[$type] as $_rule) {
                                 if (($valid = $v($_rule))) {
                                     break;
                                 }
                             }                
+
+                            if (!$valid) {
+                                // rule did not match, restore position in token stream
+                                $pos   = $state;
+                                $valid = false;
+                            }
                             break;
                         case '$option':
                             $state = $pos;
