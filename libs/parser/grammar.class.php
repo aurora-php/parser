@@ -102,7 +102,7 @@ namespace org\octris\core\parser {
                 $this->events[$id] = [];
             }
             
-            $this->events[$id][] = $cb();
+            $this->events[$id][] = $cb;
         }
         
         /**
@@ -257,7 +257,7 @@ namespace org\octris\core\parser {
                 return $valid;
             };
 
-            $valid = $v($rules);
+            $valid = $v($this->rules);
 
             $expected = array_unique($expected);
 

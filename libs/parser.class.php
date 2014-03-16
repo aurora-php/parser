@@ -30,7 +30,7 @@ namespace org\octris\core {
             'ifile'   => '',
             'iline'   => 0,
             'line'    => 0,
-            'token'   => $token,
+            'token'   => '',
             'payload' => null
         );
         /**/
@@ -41,7 +41,7 @@ namespace org\octris\core {
          * @octdoc  p:parser/$grammar
          * @type    \org\octris\core\parser\grammar|null
          */
-        protected $grammar = null
+        protected $grammar = null;
         /**/
 
         /**
@@ -95,7 +95,7 @@ namespace org\octris\core {
                 'line'    => $line,
                 'token'   => $token,
                 'payload' => $payload
-            )
+            );
         }
 
         /**
