@@ -191,6 +191,11 @@ namespace org\octris\core\parser {
             $v = function($rule) use ($tokens, &$pos, &$v, &$expected) {
                 $valid = false;
     
+                if (is_scalar($rule) && isset($this->rules[$rule])) {
+                    // import rule
+                    $rule = $this->rules[$rule];
+                }
+    
                 if (is_array($rule)) {
                     $type = key($rule);
         
@@ -245,19 +250,25 @@ namespace org\octris\core\parser {
                 } else {
                     $token = $tokens[$pos++];
         
-                    if (($valid = ($token == $rule))) {
+                    if (($valid = ($token['token'] == $rule))) {
                         $expected = [];
                     } else {
                         $expected[] = $rule;
                     }
         
-                    printf("-> %s == %s: %d\n", $rule, $token, $valid);
+                    dprint("-> %s == %s => %d\n", $rule, $token['token'], $valid);
                 }
     
                 return $valid;
             };
 
-            $valid = $v($this->rules);
+            if (!is_null($this->initial)) {
+                ddump($tokens, $this->rules[$this->initial]);
+                
+                $valid = $v($this->rules[$this->initial]);
+            } else {
+                die("TODO: no initial rule\n");
+            }
 
             $expected = array_unique($expected);
 
