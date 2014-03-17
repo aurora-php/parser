@@ -138,7 +138,7 @@ namespace org\octris\core {
 
             while (strlen($in) > 0) {
                 foreach ($this->tokens as $token => $regexp) {
-                    if (preg_match('/^(' . $regexp . ')/i', $in, $m)) {
+                    if (preg_match('/^(' . $regexp . ')/', $in, $m)) {
                         if (!in_array($token, $this->ignore)) {
                             // collect only tokens not in ignore-list
                             $out[] = array(
