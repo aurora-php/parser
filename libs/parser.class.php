@@ -63,6 +63,15 @@ namespace org\octris\core {
         /**/
 
         /**
+         * Token names.
+         *
+         * @octdoc  p:parser/$names
+         * @type    array
+         */
+        protected $names = array();
+        /**/
+
+        /**
          * Constructor.
          *
          * @octdoc  m:parser/__construct
@@ -75,6 +84,7 @@ namespace org\octris\core {
             $this->grammar = $grammar;
             $this->ignore  = $ignore;
             $this->tokens  = $grammar->getTokens();
+            $this->names   = $grammar->getTokenNames();
         }
 
         /**
@@ -120,6 +130,20 @@ namespace org\octris\core {
         /**/
         {
             return $this->last_error;
+        }
+
+        /**
+         * Return name of the token or tokan value, if name could not be resolved.
+         *
+         * @octdoc  m:parser/getTokenName
+         * @return  mixed                   Name of token or token value.
+         */
+        public function getTokenName($token)
+        /**/
+        {
+            return (isset($this->names[$token])
+                    ? $this->names[$token]
+                    : $token);
         }
 
         /**
