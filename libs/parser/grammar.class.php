@@ -125,6 +125,18 @@ namespace org\octris\core\parser {
         {
             return $this->tokens;
         }
+
+        /**
+         * Return names of tokens. Will only work, if tokens are defined using class 'constants'.
+         *
+         * @octdoc  m:grammar/getTokenNames
+         * @return  array                                   Names of defined tokens.
+         */
+        public function getTokenNames()
+        /**/
+        {
+            return array_flip((new \ReflectionClass($this))->getConstants());
+        }
         
         /**
          * Add a token to the registry.
