@@ -21,6 +21,15 @@ namespace org\octris\core\parser {
     /**/
     {
         /**
+         * Unknown token.
+         *
+         * @octdoc  d:grammar/T_UNKNOWN
+         * @type    int
+         */
+        const T_UNKNOWN = 0;
+        /**/
+        
+        /**
          * ID of initial rule.
          *
          * @octdoc  p:grammar/$initial
