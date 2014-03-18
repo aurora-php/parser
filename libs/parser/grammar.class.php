@@ -109,7 +109,7 @@ namespace org\octris\core\parser {
          * Return list of defined tokens.
          *
          * @octdoc  m:grammar/getTokens
-         * 
+         * @return  array                                   Defined tokens.
          */
         public function getTokens()
         /**/
