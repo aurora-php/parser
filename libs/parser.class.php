@@ -152,9 +152,10 @@ namespace org\octris\core {
          * @octdoc  m:parser/tokenize
          * @param   string      $in         String to tokenize.
          * @param   int         $line       Optional line offset for error messages.
+         * @param   string      $file       Optional name of file to include in token-list.
          * @return  array|bool              Tokens parsed from snippet or false if an error occured.
          */
-        public function tokenize($in, $line = 1)
+        public function tokenize($in, $line = 1, $file = '')
         /**/
         {
             $out = array();
@@ -168,7 +169,8 @@ namespace org\octris\core {
                             $out[] = array(
                                 'token' => $token,
                                 'value' => $m[1],
-                                'line'  => $line
+                                'line'  => $line,
+                                'file'  => $file
                             );
                         }
 
@@ -178,7 +180,11 @@ namespace org\octris\core {
                     }
                 }
                 
-                $this->setError(__FILE__, __LINE__, $line, 0, sprintf('parse error at "%s" in "%s"', $in, $mem));
+                $this->setError(__FILE__, __LINE__, $line, 0, sprintf(
+                    'parse error %sat "%s" of "%s"', 
+                    ($file != '' ? 'in "' . $file . '"' : ''),
+                    $in, $mem
+                ));
                 
                 return false;
             }
