@@ -301,7 +301,8 @@ namespace org\octris\core\parser {
             if (!is_null($this->initial)) {
                 $valid = $v($this->rules[$this->initial]);
             } else {
-                die("TODO: no initial rule\n");
+                // no initial rule, build one
+                $valid = $v(['$alternation' => array_keys($this->rules)]);
             }
 
             $expected = array_unique($expected);
