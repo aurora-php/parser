@@ -182,7 +182,7 @@ namespace org\octris\core {
                 
                 $this->setError(__FILE__, __LINE__, $line, 0, sprintf(
                     'parse error %sat "%s" of "%s"', 
-                    ($file != '' ? 'in "' . $file . '"' : ''),
+                    ($file != '' ? 'in "' . $file . '" ' : ''),
                     $in, $mem
                 ));
                 
