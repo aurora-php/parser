@@ -200,10 +200,10 @@ namespace org\octris\core\parser {
          *
          * @octdoc  m:grammar/analyze
          * @param   array               $tokens             Token stream to analyze.
-         * @param   array               &$expected          Expected token if an error occured.
+         * @param   array               &$error             If an error occured the variable get's filled with the current token information and expected token(s).
          * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
          */
-        public function analyze($tokens, &$expected = null)
+        public function analyze($tokens, &$error = null)
         /**/
         {
             $expected = [];
@@ -227,7 +227,11 @@ namespace org\octris\core\parser {
                 
                             foreach ($rule[$type] as $_rule) {
                                 if (!($valid = $v($_rule))) {
-                                    if (($error = ($error || ($pos - $state) > 0))) {
+                                    if ($error) {
+                                        return false;
+                                    } elseif (($pos - $state) > 0) {
+                                        $error             = $tokens[$pos];
+                                        $error['expected'] = array_unique($expected);
                                         return false;
                                     }
                                     break;
@@ -312,15 +316,7 @@ namespace org\octris\core\parser {
                 $valid = $v(['$alternation' => array_keys($this->rules)]);
             }
 
-            if ($error) {
-                $valid = false;
-                dprint('error: %d, valid: %d', $error, $valid);
-                ddump($expected);
-            }
-
-            $expected = array_unique($expected);
-
-            return $valid;
+            return (!$error && $valid);
         }
     }
 }
