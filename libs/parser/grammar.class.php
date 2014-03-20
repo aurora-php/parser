@@ -90,6 +90,34 @@ namespace org\octris\core\parser {
                 throw new \Exception('Rule is already defined!');
             }
             
+            // { validate
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveArrayIterator($rule), true
+            );
+            
+            foreach ($iterator as $k => $v) {
+                if (!is_int($k)) {
+                    if (!is_array($v)) {
+                        throw new \Exception(sprintf("No array spefied for rule operator '%s'", $k));
+                    }
+                    
+                    switch ($k) {
+                        case '$option':
+                            if (($cnt = count($v)) != 1) {
+                                throw new \Exception(sprintf("Rule operator '\$option' takes exactly one item, '%d' given", $cnt));
+                            }
+                            break;
+                        case '$alternation':
+                        case '$concatenation':
+                        case '$repeat':
+                            break;
+                        default:
+                            throw new \Exception(sprintf("Invalid rule operator '%s'", $k));
+                    }
+                }
+            }
+            // }
+            
             $this->rules[$id] = $rule;
             
             if ($initial) {
