@@ -191,5 +191,25 @@ namespace org\octris\core {
 
             return $out;
         }        
+        
+        /**
+         * Analyze / validate token stream.
+         *
+         * @octdoc  m:grammar/analyze
+         * @param   array               $tokens             Token stream to analyze.
+         * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
+         */
+        public function analyze($tokens)
+        /**/
+        {
+            if (($valid = $this->grammar->analyze($tokens, $error)) === false) {
+                $this->setError(
+                    __FILE__, __LINE__, 
+                    $error['line'], $error['token'], $error['expected']
+                );                
+            }
+            
+            return $valid;
+        }
     }
 }
