@@ -208,8 +208,9 @@ namespace org\octris\core\parser {
         {
             $expected = [];
             $pos      = 0;
+            $error    = false;
 
-            $v = function($rule) use ($tokens, &$pos, &$v, &$expected) {
+            $v = function($rule) use ($tokens, &$pos, &$v, &$expected, &$error) {
                 $valid = false;
     
                 if (is_scalar($rule) && isset($this->rules[$rule])) {
@@ -226,6 +227,9 @@ namespace org\octris\core\parser {
                 
                             foreach ($rule[$type] as $_rule) {
                                 if (!($valid = $v($_rule))) {
+                                    if (($error = ($error || ($pos - $state) > 0))) {
+                                        return false;
+                                    }
                                     break;
                                 }
                             }
@@ -240,7 +244,8 @@ namespace org\octris\core\parser {
                             $state = $pos;
                 
                             foreach ($rule[$type] as $_rule) {
-                                if (($valid = $v($_rule))) {
+                                if (($valid = $v($_rule)) || $error) {
+                                    // if ($error) return false;
                                     break;
                                 }
                             }                
@@ -255,7 +260,8 @@ namespace org\octris\core\parser {
                             $state = $pos;
                 
                             foreach ($rule[$type] as $_rule) {
-                                if (($valid = $v($_rule))) {
+                                if (($valid = $v($_rule)) || $error) {
+                                    if ($error) return false;
                                     break;
                                 }
                             }
@@ -271,7 +277,8 @@ namespace org\octris\core\parser {
                                 $state = $pos;
                 
                                 foreach ($rule[$type] as $_rule) {
-                                    if (($valid = $v($_rule))) {
+                                    if (($valid = $v($_rule)) || $error) {
+                                        if ($error) return false;
                                         break;
                                     }
                                 }
@@ -295,7 +302,7 @@ namespace org\octris\core\parser {
                     }
                 }
     
-                return $valid;
+                return (!$error ? $valid : false);
             };
 
             if (!is_null($this->initial)) {
@@ -303,6 +310,12 @@ namespace org\octris\core\parser {
             } else {
                 // no initial rule, build one
                 $valid = $v(['$alternation' => array_keys($this->rules)]);
+            }
+
+            if ($error) {
+                $valid = false;
+                dprint('error: %d, valid: %d', $error, $valid);
+                ddump($expected);
             }
 
             $expected = array_unique($expected);
