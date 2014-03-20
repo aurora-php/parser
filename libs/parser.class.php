@@ -133,7 +133,7 @@ namespace org\octris\core {
         }
 
         /**
-         * Return name of the token or tokan value, if name could not be resolved.
+         * Return name of the token or token value, if name could not be resolved.
          *
          * @octdoc  m:parser/getTokenName
          * @return  mixed                   Name of token or token value.
