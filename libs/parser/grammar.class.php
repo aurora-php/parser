@@ -258,7 +258,13 @@ namespace org\octris\core\parser {
                                     if ($error) {
                                         return false;
                                     } elseif (($pos - $state) > 0) {
-                                        $error             = $tokens[$pos];
+                                        $error = (isset($tokens[$pos]) 
+                                                  ? $tokens[$pos] 
+                                                  : array_merge(
+                                                        $tokens[$pos - 1], 
+                                                        array('token' => self::T_UNKNOWN, 'value' => self::T_UNKNOWN)
+                                                    ));
+                                        
                                         $error['expected'] = array_unique($expected);
                                         return false;
                                     }
@@ -332,6 +338,8 @@ namespace org\octris\core\parser {
                     } else {
                         $expected[] = $rule;
                     }
+                } else {
+                    $expected[] = $rule;
                 }
     
                 return (!$error ? $valid : false);
