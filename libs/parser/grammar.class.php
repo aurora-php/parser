@@ -98,7 +98,7 @@ namespace org\octris\core\parser {
             foreach ($iterator as $k => $v) {
                 if (!is_int($k)) {
                     if (!is_array($v)) {
-                        throw new \Exception(sprintf("No array spefied for rule operator '%s'", $k));
+                        throw new \Exception(sprintf("No array specified for rule operator '%s'", $k));
                     }
                     
                     switch ($k) {
