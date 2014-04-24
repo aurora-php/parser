@@ -352,7 +352,19 @@ namespace org\octris\core\parser {
                 $valid = $v(['$alternation' => array_keys($this->rules)]);
             }
 
-            return (!$error && $valid);
+            $valid = (!$error && $valid);
+
+            if ($valid) {
+                foreach ($tokens as $token) {
+                    if (isset($this->events[$token['token']])) {
+                        foreach ($this->events[$token['token']] as $event) {
+                            $event($token);
+                        }
+                    }
+                }
+            }
+
+            return $valid;
         }
     }
 }
