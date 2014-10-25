@@ -187,7 +187,7 @@ namespace octris\core\parser {
                 '$option'        => array('[ ', '', ' ]')
             );
     
-            $render = function($rule) use ($glue, &$render) {
+            $render = function ($rule) use ($glue, &$render) {
                 if (is_array($rule)) {
                     $type = key($rule);
 
@@ -229,7 +229,7 @@ namespace octris\core\parser {
             $pos      = 0;
             $error    = false;
 
-            $v = function($rule) use ($tokens, &$pos, &$v, &$expected, &$error) {
+            $v = function ($rule) use ($tokens, &$pos, &$v, &$expected, &$error) {
                 $valid = false;
     
                 if (is_scalar($rule) && isset($this->rules[$rule])) {
