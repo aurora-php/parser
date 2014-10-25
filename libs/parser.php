@@ -18,7 +18,6 @@ namespace octris\core {
      * @author      Harald Lapp <harald@octris.org>
      */
     class parser
-    /**/
     {
         /**
          * Last occured parser error.
@@ -79,7 +78,6 @@ namespace octris\core {
          * @param   array                               $ignore             Optional tokens to ignore.
          */
         public function __construct(\octris\core\parser\grammar $grammar, array $ignore = array())
-        /**/
         {
             $this->grammar = $grammar;
             $this->ignore  = $ignore;
@@ -98,7 +96,6 @@ namespace octris\core {
          * @param   mixed       $payload    Optional additional information.
          */
         protected function setError($ifile, $iline, $line, $token, $payload = NULL)
-        /**/
         {
             $this->last_error = array(
                 'ifile'   => $ifile,
@@ -116,7 +113,6 @@ namespace octris\core {
          * @return  \octris\core\parser\grammar             Instance of grammar.
          */
         public function getGrammar()
-        /**/
         {
             return $this->grammar;
         }
@@ -127,7 +123,6 @@ namespace octris\core {
          * @octdoc  m:parser/getLastError
          */
         public function getLastError()
-        /**/
         {
             return $this->last_error;
         }
@@ -139,7 +134,6 @@ namespace octris\core {
          * @return  mixed                   Name of token or token value.
          */
         public function getTokenName($token)
-        /**/
         {
             return (isset($this->names[$token])
                     ? $this->names[$token]
@@ -156,7 +150,6 @@ namespace octris\core {
          * @return  array|bool              Tokens parsed from snippet or false if an error occured.
          */
         public function tokenize($in, $line = 1, $file = '')
-        /**/
         {
             $out = array();
             $mem = $in;
@@ -200,7 +193,6 @@ namespace octris\core {
          * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
          */
         public function analyze($tokens)
-        /**/
         {
             if (($valid = $this->grammar->analyze($tokens, $error)) === false) {
                 $this->setError(

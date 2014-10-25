@@ -18,7 +18,6 @@ namespace octris\core\parser {
      * @author      Harald Lapp <harald@octris.org>
      */
     class grammar
-    /**/
     {
         /**
          * Unknown token.
@@ -71,7 +70,6 @@ namespace octris\core\parser {
          * @octdoc  m:grammar/__construct
          */
         public function __construct()
-        /**/
         {
         }
         
@@ -84,7 +82,6 @@ namespace octris\core\parser {
          * @param   bool                $initial            Whether to set the rule as initial.
          */
         public function addRule($id, array $rule, $initial = false)
-        /**/
         {
             if (isset($this->rules[$id])) {
                 throw new \Exception('Rule is already defined!');
@@ -133,7 +130,6 @@ namespace octris\core\parser {
          * @param   callable            $cb                 Callback to call if the token occurs.
          */
         public function addEvent($id, callable $cb)
-        /**/
         {
             if (!isset($this->events[$id])) {
                 $this->events[$id] = [];
@@ -149,7 +145,6 @@ namespace octris\core\parser {
          * @return  array                                   Defined tokens.
          */
         public function getTokens()
-        /**/
         {
             return $this->tokens;
         }
@@ -161,7 +156,6 @@ namespace octris\core\parser {
          * @return  array                                   Names of defined tokens.
          */
         public function getTokenNames()
-        /**/
         {
             return array_flip((new \ReflectionClass($this))->getConstants());
         }
@@ -174,7 +168,6 @@ namespace octris\core\parser {
          * @param   string          $regexp                 Regular expression for parser to match token.
          */
         public function addToken($name, $regexp)
-        /**/
         {
             $this->tokens[$name] = $regexp;
         }
@@ -186,7 +179,6 @@ namespace octris\core\parser {
          * @return  string                                  The EBNF.
          */
         public function getEBNF()
-        /**/
         {
             $glue = array(
                 '$concatenation' => array('', ' , ', ''),
@@ -232,7 +224,6 @@ namespace octris\core\parser {
          * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
          */
         public function analyze($tokens, &$error = null)
-        /**/
         {
             $expected = [];
             $pos      = 0;
