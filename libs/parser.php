@@ -173,19 +173,19 @@ class parser
                     continue 2;
                 }
             }
-            
+
             $this->setError(__FILE__, __LINE__, $line, 0, sprintf(
-                'parse error %sat "%s" of "%s"', 
+                'parse error %sat "%s" of "%s"',
                 ($file != '' ? 'in "' . $file . '" ' : ''),
                 $in, $mem
             ));
-            
+
             return false;
         }
 
         return $out;
-    }        
-    
+    }
+
     /**
      * Analyze / validate token stream.
      *
@@ -197,11 +197,11 @@ class parser
     {
         if (($valid = $this->grammar->analyze($tokens, $error)) === false) {
             $this->setError(
-                __FILE__, __LINE__, 
+                __FILE__, __LINE__,
                 $error['line'], $error['token'], $error['expected']
-            );                
+            );
         }
-        
+
         return $valid;
     }
 }

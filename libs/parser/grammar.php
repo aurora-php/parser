@@ -28,7 +28,7 @@ class grammar
      */
     const T_UNKNOWN = 0;
     /**/
-    
+
     /**
      * ID of initial rule.
      *
@@ -37,7 +37,7 @@ class grammar
      */
     protected $initial = null;
     /**/
-    
+
     /**
      * Grammar rules.
      *
@@ -46,7 +46,7 @@ class grammar
      */
     protected $rules = [];
     /**/
-    
+
     /**
      * Events for tokens.
      *
@@ -55,7 +55,7 @@ class grammar
      */
     protected $events = [];
     /**/
-    
+
     /**
      * Registered tokens.
      *
@@ -64,7 +64,7 @@ class grammar
      */
     protected $tokens = array();
     /**/
-    
+
     /**
      * Constructor.
      *
@@ -73,7 +73,7 @@ class grammar
     public function __construct()
     {
     }
-    
+
     /**
      * Add a rule to the grammar.
      *
@@ -87,18 +87,18 @@ class grammar
         if (isset($this->rules[$id])) {
             throw new \Exception('Rule is already defined!');
         }
-        
+
         // { validate
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveArrayIterator($rule), true
         );
-        
+
         foreach ($iterator as $k => $v) {
             if (!is_int($k)) {
                 if (!is_array($v)) {
                     throw new \Exception(sprintf("No array specified for rule operator '%s'", $k));
                 }
-                
+
                 switch ($k) {
                     case '$option':
                         if (($cnt = count($v)) != 1) {
@@ -115,14 +115,14 @@ class grammar
             }
         }
         // }
-        
+
         $this->rules[$id] = $rule;
-        
+
         if ($initial) {
             $this->initial = $id;
         }
     }
-    
+
     /**
      * Add an event for a token.
      *
@@ -135,10 +135,10 @@ class grammar
         if (!isset($this->events[$id])) {
             $this->events[$id] = [];
         }
-        
+
         $this->events[$id][] = $cb;
     }
-    
+
     /**
      * Return list of defined tokens.
      *
@@ -160,7 +160,7 @@ class grammar
     {
         return array_flip((new \ReflectionClass($this))->getConstants());
     }
-    
+
     /**
      * Add a token to the registry.
      *
@@ -172,7 +172,7 @@ class grammar
     {
         $this->tokens[$name] = $regexp;
     }
-    
+
     /**
      * Return the EBNF for the defined grammar.
      *
@@ -196,13 +196,13 @@ class grammar
                     $_rule = $render($_rule);
                 }
 
-                $return = $glue[$type][0] . 
+                $return = $glue[$type][0] .
                           implode($glue[$type][1], $rule[$type]) .
                           $glue[$type][2];
             } else {
                 $return = $rule;
             }
-    
+
             return $return;
         };
 
@@ -240,23 +240,23 @@ class grammar
 
             if (is_array($rule)) {
                 $type = key($rule);
-    
+
                 switch ($type) {
                     case '$concatenation':
                         $state = $pos;
-            
+
                         foreach ($rule[$type] as $_rule) {
                             if (!($valid = $v($_rule))) {
                                 if ($error) {
                                     return false;
                                 } elseif (($pos - $state) > 0) {
-                                    $error = (isset($tokens[$pos]) 
-                                              ? $tokens[$pos] 
+                                    $error = (isset($tokens[$pos])
+                                              ? $tokens[$pos]
                                               : array_merge(
-                                                    $tokens[$pos - 1], 
+                                                    $tokens[$pos - 1],
                                                     array('token' => self::T_UNKNOWN, 'value' => self::T_UNKNOWN)
                                                 ));
-                                    
+
                                     $error['expected'] = array_unique($expected);
                                     return false;
                                 }
@@ -272,13 +272,13 @@ class grammar
                         break;
                     case '$alternation':
                         $state = $pos;
-            
+
                         foreach ($rule[$type] as $_rule) {
                             if (($valid = $v($_rule)) || $error) {
                                 // if ($error) return false;
                                 break;
                             }
-                        }                
+                        }
 
                         if (!$valid) {
                             // rule did not match, restore position in token stream
@@ -288,14 +288,14 @@ class grammar
                         break;
                     case '$option':
                         $state = $pos;
-            
+
                         foreach ($rule[$type] as $_rule) {
                             if (($valid = $v($_rule)) || $error) {
                                 if ($error) return false;
                                 break;
                             }
                         }
-            
+
                         if (!$valid) {
                             // rule did not match, restore position in token stream
                             $pos   = $state;
@@ -305,7 +305,7 @@ class grammar
                     case '$repeat':
                         do {
                             $state = $pos;
-            
+
                             foreach ($rule[$type] as $_rule) {
                                 if (($valid = $v($_rule)) || $error) {
                                     if ($error) return false;
@@ -313,7 +313,7 @@ class grammar
                                 }
                             }
                         } while ($valid);
-            
+
                         if (!$valid) {
                             // rule did not match, restore position in token stream
                             $pos   = $state;
@@ -323,7 +323,7 @@ class grammar
                 }
             } elseif (($valid = isset($tokens[$pos]))) {
                 $token = $tokens[$pos];
-    
+
                 if (($valid = ($token['token'] == $rule))) {
                     ++$pos;
                     $expected = [];
