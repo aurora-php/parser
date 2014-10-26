@@ -205,4 +205,3 @@ class parser
         return $valid;
     }
 }
-

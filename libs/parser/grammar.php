@@ -359,4 +359,3 @@ class grammar
         return $valid;
     }
 }
-
