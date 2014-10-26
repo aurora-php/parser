@@ -312,7 +312,7 @@ class grammar
                                     break;
                                 }
                             }
-                        } while($valid);
+                        } while ($valid);
             
                         if (!$valid) {
                             // rule did not match, restore position in token stream
