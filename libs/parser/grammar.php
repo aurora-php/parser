@@ -9,353 +9,354 @@
  * file that was distributed with this source code.
  */
 
-namespace octris\core\parser {
+namespace octris\core\parser;
+
+/**
+ * Class for defining a parser grammar.
+ *
+ * @octdoc      c:parser/grammar
+ * @copyright   copyright (c) 2014 by Harald Lapp
+ * @author      Harald Lapp <harald@octris.org>
+ */
+class grammar
+{
     /**
-     * Class for defining a parser grammar.
+     * Unknown token.
      *
-     * @octdoc      c:parser/grammar
-     * @copyright   copyright (c) 2014 by Harald Lapp
-     * @author      Harald Lapp <harald@octris.org>
+     * @octdoc  d:grammar/T_UNKNOWN
+     * @type    int
      */
-    class grammar
+    const T_UNKNOWN = 0;
+    /**/
+    
+    /**
+     * ID of initial rule.
+     *
+     * @octdoc  p:grammar/$initial
+     * @type    int|string|null
+     */
+    protected $initial = null;
+    /**/
+    
+    /**
+     * Grammar rules.
+     *
+     * @octdoc  p:grammar/$rules
+     * @type    array
+     */
+    protected $rules = [];
+    /**/
+    
+    /**
+     * Events for tokens.
+     *
+     * @octdoc  p:grammar/$events
+     * @type    array
+     */
+    protected $events = [];
+    /**/
+    
+    /**
+     * Registered tokens.
+     *
+     * @octdoc  p:grammar/$tokens
+     * @type    array
+     */
+    protected $tokens = array();
+    /**/
+    
+    /**
+     * Constructor.
+     *
+     * @octdoc  m:grammar/__construct
+     */
+    public function __construct()
     {
-        /**
-         * Unknown token.
-         *
-         * @octdoc  d:grammar/T_UNKNOWN
-         * @type    int
-         */
-        const T_UNKNOWN = 0;
-        /**/
-        
-        /**
-         * ID of initial rule.
-         *
-         * @octdoc  p:grammar/$initial
-         * @type    int|string|null
-         */
-        protected $initial = null;
-        /**/
-        
-        /**
-         * Grammar rules.
-         *
-         * @octdoc  p:grammar/$rules
-         * @type    array
-         */
-        protected $rules = [];
-        /**/
-        
-        /**
-         * Events for tokens.
-         *
-         * @octdoc  p:grammar/$events
-         * @type    array
-         */
-        protected $events = [];
-        /**/
-        
-        /**
-         * Registered tokens.
-         *
-         * @octdoc  p:grammar/$tokens
-         * @type    array
-         */
-        protected $tokens = array();
-        /**/
-        
-        /**
-         * Constructor.
-         *
-         * @octdoc  m:grammar/__construct
-         */
-        public function __construct()
-        {
+    }
+    
+    /**
+     * Add a rule to the grammar.
+     *
+     * @octdoc  m:grammar/addRule
+     * @param   int|string          $id                 Token identifier to apply the rule for.
+     * @param   array               $rule               Grammar rule.
+     * @param   bool                $initial            Whether to set the rule as initial.
+     */
+    public function addRule($id, array $rule, $initial = false)
+    {
+        if (isset($this->rules[$id])) {
+            throw new \Exception('Rule is already defined!');
         }
         
-        /**
-         * Add a rule to the grammar.
-         *
-         * @octdoc  m:grammar/addRule
-         * @param   int|string          $id                 Token identifier to apply the rule for.
-         * @param   array               $rule               Grammar rule.
-         * @param   bool                $initial            Whether to set the rule as initial.
-         */
-        public function addRule($id, array $rule, $initial = false)
-        {
-            if (isset($this->rules[$id])) {
-                throw new \Exception('Rule is already defined!');
-            }
-            
-            // { validate
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveArrayIterator($rule), true
-            );
-            
-            foreach ($iterator as $k => $v) {
-                if (!is_int($k)) {
-                    if (!is_array($v)) {
-                        throw new \Exception(sprintf("No array specified for rule operator '%s'", $k));
-                    }
-                    
-                    switch ($k) {
-                        case '$option':
-                            if (($cnt = count($v)) != 1) {
-                                throw new \Exception(sprintf("Rule operator '\$option' takes exactly one item, '%d' given", $cnt));
-                            }
-                            break;
-                        case '$alternation':
-                        case '$concatenation':
-                        case '$repeat':
-                            break;
-                        default:
-                            throw new \Exception(sprintf("Invalid rule operator '%s'", $k));
-                    }
+        // { validate
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveArrayIterator($rule), true
+        );
+        
+        foreach ($iterator as $k => $v) {
+            if (!is_int($k)) {
+                if (!is_array($v)) {
+                    throw new \Exception(sprintf("No array specified for rule operator '%s'", $k));
+                }
+                
+                switch ($k) {
+                    case '$option':
+                        if (($cnt = count($v)) != 1) {
+                            throw new \Exception(sprintf("Rule operator '\$option' takes exactly one item, '%d' given", $cnt));
+                        }
+                        break;
+                    case '$alternation':
+                    case '$concatenation':
+                    case '$repeat':
+                        break;
+                    default:
+                        throw new \Exception(sprintf("Invalid rule operator '%s'", $k));
                 }
             }
-            // }
-            
-            $this->rules[$id] = $rule;
-            
-            if ($initial) {
-                $this->initial = $id;
-            }
         }
+        // }
         
-        /**
-         * Add an event for a token.
-         *
-         * @octdoc  m:grammar/addEvent
-         * @param   int                 $id                 Token identifier.
-         * @param   callable            $cb                 Callback to call if the token occurs.
-         */
-        public function addEvent($id, callable $cb)
-        {
-            if (!isset($this->events[$id])) {
-                $this->events[$id] = [];
-            }
-            
-            $this->events[$id][] = $cb;
-        }
+        $this->rules[$id] = $rule;
         
-        /**
-         * Return list of defined tokens.
-         *
-         * @octdoc  m:grammar/getTokens
-         * @return  array                                   Defined tokens.
-         */
-        public function getTokens()
-        {
-            return $this->tokens;
+        if ($initial) {
+            $this->initial = $id;
         }
-
-        /**
-         * Return names of tokens. Will only work, if tokens are defined using class 'constants'.
-         *
-         * @octdoc  m:grammar/getTokenNames
-         * @return  array                                   Names of defined tokens.
-         */
-        public function getTokenNames()
-        {
-            return array_flip((new \ReflectionClass($this))->getConstants());
-        }
-        
-        /**
-         * Add a token to the registry.
-         *
-         * @octdoc  m:grammar/addToken
-         * @param   string          $name                   Name of token.
-         * @param   string          $regexp                 Regular expression for parser to match token.
-         */
-        public function addToken($name, $regexp)
-        {
-            $this->tokens[$name] = $regexp;
-        }
-        
-        /**
-         * Return the EBNF for the defined grammar.
-         *
-         * @octdoc  m:grammar/getEBNF
-         * @return  string                                  The EBNF.
-         */
-        public function getEBNF()
-        {
-            $glue = array(
-                '$concatenation' => array('', ' , ', ''),
-                '$alternation'   => array('( ', ' | ', ' )'),
-                '$repeat'        => array('{ ', '', ' }'),
-                '$option'        => array('[ ', '', ' ]')
-            );
+    }
     
-            $render = function ($rule) use ($glue, &$render) {
-                if (is_array($rule)) {
-                    $type = key($rule);
+    /**
+     * Add an event for a token.
+     *
+     * @octdoc  m:grammar/addEvent
+     * @param   int                 $id                 Token identifier.
+     * @param   callable            $cb                 Callback to call if the token occurs.
+     */
+    public function addEvent($id, callable $cb)
+    {
+        if (!isset($this->events[$id])) {
+            $this->events[$id] = [];
+        }
+        
+        $this->events[$id][] = $cb;
+    }
+    
+    /**
+     * Return list of defined tokens.
+     *
+     * @octdoc  m:grammar/getTokens
+     * @return  array                                   Defined tokens.
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
 
-                    foreach ($rule[$type] as &$_rule) {
-                        $_rule = $render($_rule);
-                    }
+    /**
+     * Return names of tokens. Will only work, if tokens are defined using class 'constants'.
+     *
+     * @octdoc  m:grammar/getTokenNames
+     * @return  array                                   Names of defined tokens.
+     */
+    public function getTokenNames()
+    {
+        return array_flip((new \ReflectionClass($this))->getConstants());
+    }
+    
+    /**
+     * Add a token to the registry.
+     *
+     * @octdoc  m:grammar/addToken
+     * @param   string          $name                   Name of token.
+     * @param   string          $regexp                 Regular expression for parser to match token.
+     */
+    public function addToken($name, $regexp)
+    {
+        $this->tokens[$name] = $regexp;
+    }
+    
+    /**
+     * Return the EBNF for the defined grammar.
+     *
+     * @octdoc  m:grammar/getEBNF
+     * @return  string                                  The EBNF.
+     */
+    public function getEBNF()
+    {
+        $glue = array(
+            '$concatenation' => array('', ' , ', ''),
+            '$alternation'   => array('( ', ' | ', ' )'),
+            '$repeat'        => array('{ ', '', ' }'),
+            '$option'        => array('[ ', '', ' ]')
+        );
 
-                    $return = $glue[$type][0] . 
-                              implode($glue[$type][1], $rule[$type]) .
-                              $glue[$type][2];
-                } else {
-                    $return = $rule;
+        $render = function ($rule) use ($glue, &$render) {
+            if (is_array($rule)) {
+                $type = key($rule);
+
+                foreach ($rule[$type] as &$_rule) {
+                    $_rule = $render($_rule);
                 }
-        
-                return $return;
-            };
-    
-            $return = '';
-    
-            foreach ($this->rules as $name => $rule) {
-                $return .= $name . ' = ' . $render($rule) . " ;\n";
+
+                $return = $glue[$type][0] . 
+                          implode($glue[$type][1], $rule[$type]) .
+                          $glue[$type][2];
+            } else {
+                $return = $rule;
             }
     
             return $return;
+        };
+
+        $return = '';
+
+        foreach ($this->rules as $name => $rule) {
+            $return .= $name . ' = ' . $render($rule) . " ;\n";
         }
 
-        /**
-         * Analyze / validate token stream. If the token stream is invalid, the second, optional, parameter
-         * will contain the expected token.
-         *
-         * @octdoc  m:grammar/analyze
-         * @param   array               $tokens             Token stream to analyze.
-         * @param   array               &$error             If an error occured the variable get's filled with the current token information and expected token(s).
-         * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
-         */
-        public function analyze($tokens, &$error = null)
-        {
-            $expected = [];
-            $pos      = 0;
-            $error    = false;
+        return $return;
+    }
 
-            $v = function ($rule) use ($tokens, &$pos, &$v, &$expected, &$error) {
-                $valid = false;
+    /**
+     * Analyze / validate token stream. If the token stream is invalid, the second, optional, parameter
+     * will contain the expected token.
+     *
+     * @octdoc  m:grammar/analyze
+     * @param   array               $tokens             Token stream to analyze.
+     * @param   array               &$error             If an error occured the variable get's filled with the current token information and expected token(s).
+     * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
+     */
+    public function analyze($tokens, &$error = null)
+    {
+        $expected = [];
+        $pos      = 0;
+        $error    = false;
+
+        $v = function ($rule) use ($tokens, &$pos, &$v, &$expected, &$error) {
+            $valid = false;
+
+            if (is_scalar($rule) && isset($this->rules[$rule])) {
+                // import rule
+                $rule = $this->rules[$rule];
+            }
+
+            if (is_array($rule)) {
+                $type = key($rule);
     
-                if (is_scalar($rule) && isset($this->rules[$rule])) {
-                    // import rule
-                    $rule = $this->rules[$rule];
-                }
-    
-                if (is_array($rule)) {
-                    $type = key($rule);
-        
-                    switch ($type) {
-                        case '$concatenation':
-                            $state = $pos;
-                
-                            foreach ($rule[$type] as $_rule) {
-                                if (!($valid = $v($_rule))) {
-                                    if ($error) {
-                                        return false;
-                                    } elseif (($pos - $state) > 0) {
-                                        $error = (isset($tokens[$pos]) 
-                                                  ? $tokens[$pos] 
-                                                  : array_merge(
-                                                        $tokens[$pos - 1], 
-                                                        array('token' => self::T_UNKNOWN, 'value' => self::T_UNKNOWN)
-                                                    ));
-                                        
-                                        $error['expected'] = array_unique($expected);
-                                        return false;
-                                    }
-                                    break;
+                switch ($type) {
+                    case '$concatenation':
+                        $state = $pos;
+            
+                        foreach ($rule[$type] as $_rule) {
+                            if (!($valid = $v($_rule))) {
+                                if ($error) {
+                                    return false;
+                                } elseif (($pos - $state) > 0) {
+                                    $error = (isset($tokens[$pos]) 
+                                              ? $tokens[$pos] 
+                                              : array_merge(
+                                                    $tokens[$pos - 1], 
+                                                    array('token' => self::T_UNKNOWN, 'value' => self::T_UNKNOWN)
+                                                ));
+                                    
+                                    $error['expected'] = array_unique($expected);
+                                    return false;
                                 }
+                                break;
                             }
+                        }
 
-                            if (!$valid) {
-                                // rule did not match, restore position in token stream
-                                $pos   = $state;
-                                $valid = false;
+                        if (!$valid) {
+                            // rule did not match, restore position in token stream
+                            $pos   = $state;
+                            $valid = false;
+                        }
+                        break;
+                    case '$alternation':
+                        $state = $pos;
+            
+                        foreach ($rule[$type] as $_rule) {
+                            if (($valid = $v($_rule)) || $error) {
+                                // if ($error) return false;
+                                break;
                             }
-                            break;
-                        case '$alternation':
-                            $state = $pos;
-                
-                            foreach ($rule[$type] as $_rule) {
-                                if (($valid = $v($_rule)) || $error) {
-                                    // if ($error) return false;
-                                    break;
-                                }
-                            }                
+                        }                
 
-                            if (!$valid) {
-                                // rule did not match, restore position in token stream
-                                $pos   = $state;
-                                $valid = false;
+                        if (!$valid) {
+                            // rule did not match, restore position in token stream
+                            $pos   = $state;
+                            $valid = false;
+                        }
+                        break;
+                    case '$option':
+                        $state = $pos;
+            
+                        foreach ($rule[$type] as $_rule) {
+                            if (($valid = $v($_rule)) || $error) {
+                                if ($error) return false;
+                                break;
                             }
-                            break;
-                        case '$option':
+                        }
+            
+                        if (!$valid) {
+                            // rule did not match, restore position in token stream
+                            $pos   = $state;
+                            $valid = true;
+                        }
+                        break;
+                    case '$repeat':
+                        do {
                             $state = $pos;
-                
+            
                             foreach ($rule[$type] as $_rule) {
                                 if (($valid = $v($_rule)) || $error) {
                                     if ($error) return false;
                                     break;
                                 }
                             }
-                
-                            if (!$valid) {
-                                // rule did not match, restore position in token stream
-                                $pos   = $state;
-                                $valid = true;
-                            }
-                            break;
-                        case '$repeat':
-                            do {
-                                $state = $pos;
-                
-                                foreach ($rule[$type] as $_rule) {
-                                    if (($valid = $v($_rule)) || $error) {
-                                        if ($error) return false;
-                                        break;
-                                    }
-                                }
-                            } while($valid);
-                
-                            if (!$valid) {
-                                // rule did not match, restore position in token stream
-                                $pos   = $state;
-                                $valid = true;
-                            }
-                            break;
-                    }
-                } elseif (($valid = isset($tokens[$pos]))) {
-                    $token = $tokens[$pos];
-        
-                    if (($valid = ($token['token'] == $rule))) {
-                        ++$pos;
-                        $expected = [];
-                    } else {
-                        $expected[] = $rule;
-                    }
+                        } while($valid);
+            
+                        if (!$valid) {
+                            // rule did not match, restore position in token stream
+                            $pos   = $state;
+                            $valid = true;
+                        }
+                        break;
+                }
+            } elseif (($valid = isset($tokens[$pos]))) {
+                $token = $tokens[$pos];
+    
+                if (($valid = ($token['token'] == $rule))) {
+                    ++$pos;
+                    $expected = [];
                 } else {
                     $expected[] = $rule;
                 }
-    
-                return (!$error ? $valid : false);
-            };
-
-            if (!is_null($this->initial)) {
-                $valid = $v($this->rules[$this->initial]);
             } else {
-                // no initial rule, build one
-                $valid = $v(['$alternation' => array_keys($this->rules)]);
+                $expected[] = $rule;
             }
 
-            $valid = (!$error && $valid);
+            return (!$error ? $valid : false);
+        };
 
-            if ($valid) {
-                foreach ($tokens as $token) {
-                    if (isset($this->events[$token['token']])) {
-                        foreach ($this->events[$token['token']] as $event) {
-                            $event($token);
-                        }
+        if (!is_null($this->initial)) {
+            $valid = $v($this->rules[$this->initial]);
+        } else {
+            // no initial rule, build one
+            $valid = $v(['$alternation' => array_keys($this->rules)]);
+        }
+
+        $valid = (!$error && $valid);
+
+        if ($valid) {
+            foreach ($tokens as $token) {
+                if (isset($this->events[$token['token']])) {
+                    foreach ($this->events[$token['token']] as $event) {
+                        $event($token);
                     }
                 }
             }
-
-            return $valid;
         }
+
+        return $valid;
     }
 }
+
