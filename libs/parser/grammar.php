@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace octris\core\parser;
+namespace Octris\Core\Parser;
 
 /**
  * Class for defining a parser grammar.
@@ -18,7 +18,7 @@ namespace octris\core\parser;
  * @copyright   copyright (c) 2014 by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
-class grammar
+class Grammar
 {
     /**
      * Unknown token.

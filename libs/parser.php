@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace octris\core;
+namespace Octris\Core;
 
 /**
  * General purpose parser.
@@ -18,7 +18,7 @@ namespace octris\core;
  * @copyright   copyright (c) 2010-2014 by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
-class parser
+class Parser
 {
     /**
      * Last occured parser error.
@@ -75,10 +75,10 @@ class parser
      * Constructor.
      *
      * @octdoc  m:parser/__construct
-     * @param   \octris\core\parser\grammar     $grammar            Grammar to use for the parser.
+     * @param   \Octris\Core\Parser\Grammar     $grammar            Grammar to use for the parser.
      * @param   array                               $ignore             Optional tokens to ignore.
      */
-    public function __construct(\octris\core\parser\grammar $grammar, array $ignore = array())
+    public function __construct(\Octris\Core\Parser\Grammar $grammar, array $ignore = array())
     {
         $this->grammar = $grammar;
         $this->ignore  = $ignore;
