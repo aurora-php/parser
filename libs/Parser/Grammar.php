@@ -277,8 +277,8 @@ class Grammar
                         foreach ($rule[$type] as $_rule) {
                             if (($valid = $v($_rule)) || $error) {
                                 if ($error) {
-                                    return false
-                                };
+                                    return false;
+                                }
                                 break;
                             }
                         }
