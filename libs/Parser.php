@@ -83,7 +83,7 @@ class Parser
      * @param   mixed       $token      Token that triggered the error.
      * @param   mixed       $payload    Optional additional information.
      */
-    protected function setError($ifile, $iline, $line, $token, $payload = NULL)
+    protected function setError($ifile, $iline, $line, $token, $payload = null)
     {
         $this->last_error = array(
             'ifile'   => $ifile,
@@ -160,7 +160,8 @@ class Parser
             $this->setError(__FILE__, __LINE__, $line, 0, sprintf(
                 'parse error %sat "%s" of "%s"',
                 ($file != '' ? 'in "' . $file . '" ' : ''),
-                $in, $mem
+                $in,
+                $mem
             ));
 
             return false;
@@ -179,8 +180,11 @@ class Parser
     {
         if (($valid = $this->grammar->analyze($tokens, $error)) === false) {
             $this->setError(
-                __FILE__, __LINE__,
-                $error['line'], $error['token'], $error['expected']
+                __FILE__,
+                __LINE__,
+                $error['line'],
+                $error['token'],
+                $error['expected']
             );
         }
 

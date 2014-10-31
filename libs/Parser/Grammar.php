@@ -77,7 +77,8 @@ class Grammar
 
         // { validate
         $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveArrayIterator($rule), true
+            new \RecursiveArrayIterator($rule),
+            true
         );
 
         foreach ($iterator as $k => $v) {
@@ -235,7 +236,10 @@ class Grammar
                                               ? $tokens[$pos]
                                               : array_merge(
                                                     $tokens[$pos - 1],
-                                                    array('token' => self::T_UNKNOWN, 'value' => self::T_UNKNOWN)
+                                                    array(
+                                                        'token' => self::T_UNKNOWN,
+                                                        'value' => self::T_UNKNOWN
+                                                    )
                                                 ));
 
                                     $error['expected'] = array_unique($expected);
@@ -272,7 +276,9 @@ class Grammar
 
                         foreach ($rule[$type] as $_rule) {
                             if (($valid = $v($_rule)) || $error) {
-                                if ($error) return false;
+                                if ($error) {
+                                    return false
+                                };
                                 break;
                             }
                         }
@@ -289,7 +295,9 @@ class Grammar
 
                             foreach ($rule[$type] as $_rule) {
                                 if (($valid = $v($_rule)) || $error) {
-                                    if ($error) return false;
+                                    if ($error) {
+                                        return false;
+                                    }
                                     break;
                                 }
                             }
