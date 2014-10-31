@@ -235,12 +235,12 @@ class Grammar
                                     $error = (isset($tokens[$pos])
                                               ? $tokens[$pos]
                                               : array_merge(
-                                                    $tokens[$pos - 1],
-                                                    array(
-                                                        'token' => self::T_UNKNOWN,
-                                                        'value' => self::T_UNKNOWN
-                                                    )
-                                                ));
+                                                  $tokens[$pos - 1],
+                                                  array(
+                                                      'token' => self::T_UNKNOWN,
+                                                      'value' => self::T_UNKNOWN
+                                                  )
+                                              ));
 
                                     $error['expected'] = array_unique($expected);
                                     return false;
