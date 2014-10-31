@@ -14,7 +14,6 @@ namespace Octris\Core\Parser;
 /**
  * Class for defining a parser grammar.
  *
- * @octdoc      c:parser/grammar
  * @copyright   copyright (c) 2014 by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
@@ -23,52 +22,41 @@ class Grammar
     /**
      * Unknown token.
      *
-     * @octdoc  d:grammar/T_UNKNOWN
      * @type    int
      */
     const T_UNKNOWN = 0;
-    /**/
-
+    
     /**
      * ID of initial rule.
      *
-     * @octdoc  p:grammar/$initial
      * @type    int|string|null
      */
     protected $initial = null;
-    /**/
-
+    
     /**
      * Grammar rules.
      *
-     * @octdoc  p:grammar/$rules
      * @type    array
      */
     protected $rules = [];
-    /**/
-
+    
     /**
      * Events for tokens.
      *
-     * @octdoc  p:grammar/$events
      * @type    array
      */
     protected $events = [];
-    /**/
-
+    
     /**
      * Registered tokens.
      *
-     * @octdoc  p:grammar/$tokens
      * @type    array
      */
     protected $tokens = array();
-    /**/
-
+    
     /**
      * Constructor.
      *
-     * @octdoc  m:grammar/__construct
      */
     public function __construct()
     {
@@ -77,7 +65,6 @@ class Grammar
     /**
      * Add a rule to the grammar.
      *
-     * @octdoc  m:grammar/addRule
      * @param   int|string          $id                 Token identifier to apply the rule for.
      * @param   array               $rule               Grammar rule.
      * @param   bool                $initial            Whether to set the rule as initial.
@@ -126,7 +113,6 @@ class Grammar
     /**
      * Add an event for a token.
      *
-     * @octdoc  m:grammar/addEvent
      * @param   int                 $id                 Token identifier.
      * @param   callable            $cb                 Callback to call if the token occurs.
      */
@@ -142,7 +128,6 @@ class Grammar
     /**
      * Return list of defined tokens.
      *
-     * @octdoc  m:grammar/getTokens
      * @return  array                                   Defined tokens.
      */
     public function getTokens()
@@ -153,7 +138,6 @@ class Grammar
     /**
      * Return names of tokens. Will only work, if tokens are defined using class 'constants'.
      *
-     * @octdoc  m:grammar/getTokenNames
      * @return  array                                   Names of defined tokens.
      */
     public function getTokenNames()
@@ -164,7 +148,6 @@ class Grammar
     /**
      * Add a token to the registry.
      *
-     * @octdoc  m:grammar/addToken
      * @param   string          $name                   Name of token.
      * @param   string          $regexp                 Regular expression for parser to match token.
      */
@@ -176,7 +159,6 @@ class Grammar
     /**
      * Return the EBNF for the defined grammar.
      *
-     * @octdoc  m:grammar/getEBNF
      * @return  string                                  The EBNF.
      */
     public function getEBNF()
@@ -219,7 +201,6 @@ class Grammar
      * Analyze / validate token stream. If the token stream is invalid, the second, optional, parameter
      * will contain the expected token.
      *
-     * @octdoc  m:grammar/analyze
      * @param   array               $tokens             Token stream to analyze.
      * @param   array               &$error             If an error occured the variable get's filled with the current token information and expected token(s).
      * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.

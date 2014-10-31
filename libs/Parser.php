@@ -14,7 +14,6 @@ namespace Octris\Core;
 /**
  * General purpose parser.
  *
- * @octdoc      c:core/parser
  * @copyright   copyright (c) 2010-2014 by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
@@ -23,7 +22,6 @@ class Parser
     /**
      * Last occured parser error.
      *
-     * @octdoc  p:parser/$last_error
      * @type    array
      */
     protected $last_error = array(
@@ -33,48 +31,38 @@ class Parser
         'token'   => '',
         'payload' => null
     );
-    /**/
-
+    
     /**
      * Instance of grammar class.
      *
-     * @octdoc  p:parser/$grammar
      * @type    \octris\core\parser\grammar|null
      */
     protected $grammar = null;
-    /**/
-
+    
     /**
      * Tokens to ignore. Tokenizer will drop these tokens.
      *
-     * @octdoc  p:parser/$ignore
      * @type    array
      */
     protected $ignore = array();
-    /**/
-
+    
     /**
      * Parser tokens.
      *
-     * @octdoc  p:parser/$tokens
      * @type    array
      */
     protected $tokens = array();
-    /**/
-
+    
     /**
      * Token names.
      *
-     * @octdoc  p:parser/$names
      * @type    array
      */
     protected $names = array();
-    /**/
-
+    
     /**
      * Constructor.
      *
-     * @octdoc  m:parser/__construct
      * @param   \Octris\Core\Parser\Grammar     $grammar            Grammar to use for the parser.
      * @param   array                               $ignore             Optional tokens to ignore.
      */
@@ -89,7 +77,6 @@ class Parser
     /**
      * Set parser error.
      *
-     * @octdoc  m:parser/setError
      * @param   string      $ifile      Internal filename the error occured in.
      * @param   int         $iline      Internal line number the error occured in.
      * @param   int         $line       Line in template the error was triggered for.
@@ -110,7 +97,6 @@ class Parser
     /**
      * Return instance of grammar as it was specified for constructor.
      *
-     * @octdoc  m:parser/getGrammar
      * @return  \octris\core\parser\grammar             Instance of grammar.
      */
     public function getGrammar()
@@ -121,7 +107,6 @@ class Parser
     /**
      * Return last occured error.
      *
-     * @octdoc  m:parser/getLastError
      */
     public function getLastError()
     {
@@ -131,7 +116,6 @@ class Parser
     /**
      * Return name of the token or token value, if name could not be resolved.
      *
-     * @octdoc  m:parser/getTokenName
      * @return  mixed                   Name of token or token value.
      */
     public function getTokenName($token)
@@ -144,7 +128,6 @@ class Parser
     /**
      * String tokenizer.
      *
-     * @octdoc  m:parser/tokenize
      * @param   string      $in         String to tokenize.
      * @param   int         $line       Optional line offset for error messages.
      * @param   string      $file       Optional name of file to include in token-list.
@@ -189,7 +172,6 @@ class Parser
     /**
      * Analyze / validate token stream.
      *
-     * @octdoc  m:grammar/analyze
      * @param   array               $tokens             Token stream to analyze.
      * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
      */
