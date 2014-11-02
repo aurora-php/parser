@@ -31,35 +31,35 @@ class Parser
         'token'   => '',
         'payload' => null
     );
-    
+
     /**
      * Instance of grammar class.
      *
      * @type    \octris\core\parser\grammar|null
      */
     protected $grammar = null;
-    
+
     /**
      * Tokens to ignore. Tokenizer will drop these tokens.
      *
      * @type    array
      */
     protected $ignore = array();
-    
+
     /**
      * Parser tokens.
      *
      * @type    array
      */
     protected $tokens = array();
-    
+
     /**
      * Token names.
      *
      * @type    array
      */
     protected $names = array();
-    
+
     /**
      * Constructor.
      *
@@ -106,7 +106,6 @@ class Parser
 
     /**
      * Return last occured error.
-     *
      */
     public function getLastError()
     {

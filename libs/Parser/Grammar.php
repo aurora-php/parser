@@ -25,38 +25,37 @@ class Grammar
      * @type    int
      */
     const T_UNKNOWN = 0;
-    
+
     /**
      * ID of initial rule.
      *
      * @type    int|string|null
      */
     protected $initial = null;
-    
+
     /**
      * Grammar rules.
      *
      * @type    array
      */
     protected $rules = [];
-    
+
     /**
      * Events for tokens.
      *
      * @type    array
      */
     protected $events = [];
-    
+
     /**
      * Registered tokens.
      *
      * @type    array
      */
     protected $tokens = array();
-    
+
     /**
      * Constructor.
-     *
      */
     public function __construct()
     {
