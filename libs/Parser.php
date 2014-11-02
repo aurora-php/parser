@@ -35,7 +35,7 @@ class Parser
     /**
      * Instance of grammar class.
      *
-     * @type    \octris\core\parser\grammar|null
+     * @type    \Octris\Core\Parser\Grammar|null
      */
     protected $grammar = null;
 
@@ -97,7 +97,7 @@ class Parser
     /**
      * Return instance of grammar as it was specified for constructor.
      *
-     * @return  \octris\core\parser\grammar             Instance of grammar.
+     * @return  \Octris\Core\Parser\Grammar             Instance of grammar.
      */
     public function getGrammar()
     {
