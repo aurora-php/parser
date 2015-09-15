@@ -342,6 +342,9 @@ class Grammar
                     }
                 }
             }
+        } elseif (!$error) {
+            $error = $tokens[$pos];
+            $error['expected'] = $expected;
         }
 
         return $valid;
