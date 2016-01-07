@@ -332,7 +332,7 @@ class Grammar
             $valid = $v(['$alternation' => array_keys($this->rules)]);
         }
 
-        $valid = (!$error && $valid);
+        $valid = (!$error && $valid && $pos == count($tokens));
 
         if ($valid) {
             foreach ($tokens as $token) {
@@ -342,6 +342,9 @@ class Grammar
                     }
                 }
             }
+        } elseif (!$error) {
+            $error = $tokens[$pos];
+            $error['expected'] = $expected;
         }
 
         return $valid;
