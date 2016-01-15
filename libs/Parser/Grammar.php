@@ -275,15 +275,13 @@ class Grammar
 
                         foreach ($rule[$type] as $_rule) {
                             if (($valid = $v($_rule)) || $error) {
-                                if ($error) {
-                                    return false;
-                                }
                                 break;
                             }
                         }
 
                         if (!$valid) {
                             // rule did not match, restore position in token stream
+                            $error = false; // optional rule, do not produce an error
                             $pos   = $state;
                             $valid = true;
                         }
