@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the 'octris/core' package.
+ * This file is part of the 'octris/parser' package.
  *
  * (c) Harald Lapp <harald@octris.org>
  *
@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Octris\Core;
+namespace Octris;
 
 /**
  * General purpose parser.
  *
- * @copyright   copyright (c) 2010-2014 by Harald Lapp
+ * @copyright   copyright (c) 2010-2018 by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
 class Parser
@@ -35,7 +35,7 @@ class Parser
     /**
      * Instance of grammar class.
      *
-     * @type    \Octris\Core\Parser\Grammar|null
+     * @type    \Octris\Parser\Grammar|null
      */
     protected $grammar = null;
 
@@ -63,10 +63,10 @@ class Parser
     /**
      * Constructor.
      *
-     * @param   \Octris\Core\Parser\Grammar     $grammar            Grammar to use for the parser.
+     * @param   \Octris\Parser\Grammar              $grammar            Grammar to use for the parser.
      * @param   array                               $ignore             Optional tokens to ignore.
      */
-    public function __construct(\Octris\Core\Parser\Grammar $grammar, array $ignore = array())
+    public function __construct(\Octris\Parser\Grammar $grammar, array $ignore = array())
     {
         $this->grammar = $grammar;
         $this->ignore  = $ignore;
@@ -97,7 +97,7 @@ class Parser
     /**
      * Return instance of grammar as it was specified for constructor.
      *
-     * @return  \Octris\Core\Parser\Grammar             Instance of grammar.
+     * @return  \Octris\Parser\Grammar             Instance of grammar.
      */
     public function getGrammar()
     {
