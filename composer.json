@@ -1,5 +1,5 @@
 {
-    "name": "octris/db",
+    "name": "octris/parser",
     "description": "Library for building simple parsers.",
     "type": "library",
     "license": "BSD-3-Clause",
