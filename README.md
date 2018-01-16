@@ -2,5 +2,5 @@
 
 ## Preface
 
-This library can be used to build somple parsers.
+This library can be used to build simple parsers.
 
