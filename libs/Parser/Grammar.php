@@ -14,7 +14,7 @@ namespace Octris\Parser;
 /**
  * Class for defining a parser grammar.
  *
- * @copyright   copyright (c) 2014-2018 by Harald Lapp
+ * @copyright   copyright (c) 2014-present by Harald Lapp
  * @author      Harald Lapp <harald@octris.org>
  */
 class Grammar
