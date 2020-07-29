@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the 'octris/parser' package.
  *
@@ -11,6 +13,8 @@
 
 namespace Octris\Parser;
 
+use Octris\Parser\Exception;
+
 /**
  * Class for defining a parser grammar.
  *
@@ -21,38 +25,36 @@ class Grammar
 {
     /**
      * Unknown token.
-     *
-     * @type    int
      */
-    const T_UNKNOWN = 0;
+    public const T_UNKNOWN = 0;
 
     /**
      * ID of initial rule.
      *
-     * @type    int|string|null
+     * @var     int|string|null
      */
-    protected $initial = null;
+    protected int|string|null $initial = null;
 
     /**
      * Grammar rules.
      *
-     * @type    array
+     * @var     array
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * Events for tokens.
      *
-     * @type    array
+     * @var     array
      */
-    protected $events = [];
+    protected array $events = [];
 
     /**
      * Registered tokens.
      *
-     * @type    array
+     * @var     array
      */
-    protected $tokens = array();
+    protected array $tokens = [];
 
     /**
      * Constructor.
@@ -67,11 +69,12 @@ class Grammar
      * @param   int|string          $id                 Token identifier to apply the rule for.
      * @param   array               $rule               Grammar rule.
      * @param   bool                $initial            Whether to set the rule as initial.
+     * @throws  UnexpectedValueException
      */
-    public function addRule($id, array $rule, $initial = false)
+    public function addRule(int|string $id, array $rule, bool $initial = false): void
     {
         if (isset($this->rules[$id])) {
-            throw new \Exception('Rule is already defined!');
+            throw new Exception\UnexpectedValueException('Rule is already defined!');
         }
 
         // { validate
@@ -83,13 +86,13 @@ class Grammar
         foreach ($iterator as $k => $v) {
             if (!is_int($k)) {
                 if (!is_array($v)) {
-                    throw new \Exception(sprintf("No array specified for rule operator '%s'", $k));
+                    throw new Exception\UnexpectedValueException(sprintf("No array specified for rule operator '%s'", $k));
                 }
 
                 switch ($k) {
                     case '$option':
                         if (($cnt = count($v)) != 1) {
-                            throw new \Exception(sprintf("Rule operator '\$option' takes exactly one item, '%d' given", $cnt));
+                            throw new Exception\UnexpectedValueException(sprintf("Rule operator '\$option' takes exactly one item, '%d' given", $cnt));
                         }
                         break;
                     case '$alternation':
@@ -97,7 +100,7 @@ class Grammar
                     case '$repeat':
                         break;
                     default:
-                        throw new \Exception(sprintf("Invalid rule operator '%s'", $k));
+                        throw new Exception\UnexpectedValueException(sprintf("Invalid rule operator '%s'", $k));
                 }
             }
         }
@@ -116,7 +119,7 @@ class Grammar
      * @param   int                 $id                 Token identifier.
      * @param   callable            $cb                 Callback to call if the token occurs.
      */
-    public function addEvent($id, callable $cb)
+    public function addEvent(int $id, callable $cb): void
     {
         if (!isset($this->events[$id])) {
             $this->events[$id] = [];
@@ -130,7 +133,7 @@ class Grammar
      *
      * @return  array                                   Defined tokens.
      */
-    public function getTokens()
+    public function getTokens(): array
     {
         return $this->tokens;
     }
@@ -140,7 +143,7 @@ class Grammar
      *
      * @return  array                                   Names of defined tokens.
      */
-    public function getTokenNames()
+    public function getTokenNames(): array
     {
         return array_flip((new \ReflectionClass($this))->getConstants());
     }
@@ -151,7 +154,7 @@ class Grammar
      * @param   string          $name                   Name of token.
      * @param   string          $regexp                 Regular expression for parser to match token.
      */
-    public function addToken($name, $regexp)
+    public function addToken(string $name, string $regexp): void
     {
         $this->tokens[$name] = $regexp;
     }
@@ -161,7 +164,7 @@ class Grammar
      *
      * @return  string                                  The EBNF.
      */
-    public function getEBNF()
+    public function getEBNF(): string
     {
         $glue = array(
             '$concatenation' => array('', ' , ', ''),
@@ -205,7 +208,7 @@ class Grammar
      * @param   array               &$error             If an error occured the variable get's filled with the current token information and expected token(s).
      * @return  bool                                    Returns true if token stream is valid compared to the defined grammar.
      */
-    public function analyze($tokens, &$error = null)
+    public function analyze(array $tokens, array &$error = null): bool
     {
         $expected = [];
         $pos      = 0;
